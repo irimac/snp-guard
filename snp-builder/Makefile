@@ -1,7 +1,7 @@
 IMAGE ?= snp-builder
 DOCKERFILE ?= snp-builder.dockerfile
 NAME ?= snp-builder
-OUTPUT_PATH ?= ../build
+OUTPUT_PATH ?= ../build/
 
 STATUS = $(shell docker inspect $(NAME) | grep Status | cut -d':' -f2 | sed 's/,//g' | xargs)
 EXIT_CODE = $(shell docker inspect $(NAME) | grep ExitCode | cut -d':' -f2 | sed 's/,//g' | xargs)
