@@ -8,14 +8,26 @@ EXIT_CODE = $(shell docker inspect $(NAME) | grep ExitCode | cut -d':' -f2 | sed
 
 USE_STABLE_SNAPSHOTS ?= 0
 
+# Check if http_proxy is defined and set the build-arg accordingly
+ifdef http_proxy
+BUILD_ARGS := --build-arg http_proxy=$(http_proxy) --build-arg https_proxy=$(http_proxy)
+RUN_ARGS := -e http_proxy=$(http_proxy) -e https_proxy=$(http_proxy)
+else
+BUILD_ARGS := 
+RUND_ARGS :=
+endif
+
 image:
-	docker build -t $(IMAGE) -f $(DOCKERFILE) .
+	docker build $(BUILD_ARGS) -t $(IMAGE) -f $(DOCKERFILE) .
 
 build: clean
-	docker run -v /boot:/boot -d --name $(NAME) -e USE_STABLE_SNAPSHOTS=$(USE_STABLE_SNAPSHOTS) $(IMAGE)
+	docker run -v /boot:/boot -d --name $(NAME) -e USE_STABLE_SNAPSHOTS=$(USE_STABLE_SNAPSHOTS) $(RUN_ARGS) $(IMAGE)
 
-get_files: check_status
+get_files: check_status $(OUTPUT_PATH)
 	docker cp $(NAME):/usr/src/app/snp-release.tar.gz $(OUTPUT_PATH)
+
+$(OUTPUT_PATH):
+	mkdir -p $(OUTPUT_PATH)
 
 check_status:
 	@echo $(STATUS) | grep -q exited && echo $(EXIT_CODE) | grep -q 0 || (echo "Error! Status: $(STATUS) ExitCode: $(EXIT_CODE)" && exit 1)

@@ -57,7 +57,12 @@ mkdir -p $INITRD_DIR
 
 echo "Building Docker image.."
 DOCKER_IMG="nano-vm-rootfs"
-docker build -t $DOCKER_IMG $SCRIPT_DIR
+build_args=""
+if [[ ! -z "$http_proxy" ]]; then
+	build_args+="--build-arg http_proxy=${http_proxy} "
+	build_args+="--build-arg https_proxy=${http_proxy} "
+fi
+docker build ${build_args} -t $DOCKER_IMG $SCRIPT_DIR
 
 echo "Running container.."
 docker stop $DOCKER_IMG > /dev/null 2>&1 || true
