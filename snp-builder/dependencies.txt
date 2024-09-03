@@ -27,3 +27,4 @@ zstd
 debhelper
 rsync
 wget
+python3-pip
