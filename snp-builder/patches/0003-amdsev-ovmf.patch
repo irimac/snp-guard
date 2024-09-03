@@ -1,17 +1,8 @@
-From 87de6347b49a9be9a9db38b768c1939f7fd5e2b5 Mon Sep 17 00:00:00 2001
-From: Luca Wilke <l.wilke@uni-luebeck.de>
-Date: Mon, 25 Mar 2024 13:43:33 +0100
-Subject: [PATCH] build direct boot ovmf
-
----
- common.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
 diff --git a/common.sh b/common.sh
-index 9eee947..2bbab60 100755
+index da8c550..3dc6f7d 100755
 --- a/common.sh
 +++ b/common.sh
-@@ -155,7 +155,7 @@ build_install_ovmf()
+@@ -156,7 +156,7 @@ build_install_ovmf()
  		GCCVERS="GCC5"
  	fi
  
@@ -20,7 +11,7 @@ index 9eee947..2bbab60 100755
  
  	# initialize git repo, or update existing remote to currently configured one
  	if [ -d ovmf ]; then
-@@ -179,11 +179,11 @@ build_install_ovmf()
+@@ -180,12 +180,11 @@ build_install_ovmf()
  		run_cmd git submodule update --init --recursive
  		run_cmd make -C BaseTools
  		. ./edksetup.sh --reconfig
@@ -30,10 +21,8 @@ index 9eee947..2bbab60 100755
  		mkdir -p $DEST
 -		run_cmd cp -f Build/OvmfX64/DEBUG_$GCCVERS/FV/OVMF_CODE.fd $DEST
 -		run_cmd cp -f Build/OvmfX64/DEBUG_$GCCVERS/FV/OVMF_VARS.fd $DEST
-+		run_cmd cp -f Build/AmdSev/DEBUG_$GCCVERS/FV/OVMF.fd $DEST/DIRECT_BOOT_OVMF.fd
+-		run_cmd cp -f Build/OvmfX64/DEBUG_$GCCVERS/FV/OVMF.fd $DEST
++		run_cmd cp -f Build/AmdSev/DEBUG_$GCCVERS/FV/OVMF.fd $DEST/OVMF.fd
  
  		COMMIT=$(git log --format="%h" -1 HEAD)
  		run_cmd echo $COMMIT >../source-commit.ovmf
--- 
-2.34.1
-
