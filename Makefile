@@ -9,7 +9,7 @@ CLOUD_CONFIG      ?= $(GUEST_DIR)/config-blob.img
 HEADERS_DEB       ?= $(SNP_DIR)/linux/guest/linux-headers-*.deb
 KERNEL_DEB        ?= $(SNP_DIR)/linux/guest/linux-image-*.deb
 
-OVMF              ?= $(BUILD_DIR)/snp-release/usr/local/share/qemu/DIRECT_BOOT_OVMF.fd
+OVMF              ?= $(BUILD_DIR)/snp-release/usr/local/share/qemu/OVMF.fd
 KERNEL_DIR        ?= $(BUILD_DIR)/kernel
 KERNEL            ?= $(KERNEL_DIR)/boot/vmlinuz-*
 INITRD            ?= $(BUILD_DIR)/initramfs.cpio.gz
